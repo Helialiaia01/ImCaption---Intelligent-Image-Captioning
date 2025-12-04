@@ -1,0 +1,25 @@
+[coco_path]
+# Path to COCO 2017 validation captions annotation file
+val_captions = /path/to/coco/annotations/captions_val2017.json
+
+# Path to COCO 2017 training captions annotation file  
+train_captions = /path/to/coco/annotations/captions_train2017.json
+
+# Path to the folder containing COCO images (should have train2017 and val2017 subfolders)
+image_folder = /path/to/coco/images
+
+[json_path]
+# Path to save the processed dataset JSON
+json_dataset = json_data/dataset.json
+
+# Path to save the word map
+word_map_path = json_data/word_map.json
+
+# Base path for all JSON and HDF5 output files
+base_path_json = json_data
+
+[model_path]
+# Paths to trained model checkpoints
+model_01 = Models/Version01_BEST_Captioning_model.pth.tar
+model_02 = Models/Version02_BEST_Captioning_model.pth.tar
+model_03 = Models/Version03_Captioning_model.pth.tar

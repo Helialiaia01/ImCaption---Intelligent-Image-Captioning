@@ -1,0 +1,24 @@
+# Image Captioning Project Dependencies
+
+# Deep Learning
+torch>=1.9.0
+torchvision>=0.10.0
+
+# Image Processing
+opencv-python>=4.5.0
+Pillow>=8.0.0
+
+# Data Processing
+numpy>=1.19.0
+pandas>=1.3.0
+h5py>=3.0.0
+
+# NLP
+nltk>=3.6.0
+
+# Visualization
+matplotlib>=3.4.0
+tqdm>=4.60.0
+
+# Configuration
+configparser>=5.0.0
