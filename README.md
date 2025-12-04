@@ -4,26 +4,30 @@
   <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/PyTorch-1.9+-red.svg" alt="PyTorch">
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
-  <img src="https://img.shields.io/badge/University-La%20Sapienza-orange.svg" alt="University">
+  <img src="https://img.shields.io/badge/Year-2024-yellow.svg" alt="Year">
 </p>
 
 <p align="center">
-  <b>A deep learning model for generating descriptive captions from images</b><br>
-  <i>AI Lab Project - ACSAI, La Sapienza University of Rome</i>
+  <b>Generating natural language descriptions from images using deep learning</b><br>
+  <i>AI Lab Project • ACSAI • La Sapienza University of Rome • 2024</i>
 </p>
 
 ---
 
-## 🎯 Overview
+## 🎯 What is this project?
 
-This project implements an **encoder-decoder architecture with attention mechanism** for automatic image captioning. The model uses:
+Have you ever wondered how AI can "see" an image and describe it in words? This project explores exactly that!
 
-- **ResNet-101** (CNN) for visual feature extraction
-- **Attention Mechanism** for focusing on relevant image regions
-- **LSTM** for sequential caption generation
-- **Beam Search** for improved inference
+We built an **image captioning system** that takes any photograph and generates a descriptive sentence about its content. For example, given a photo of a park, it might output: *"a dog playing with a frisbee in the grass"*.
 
-Additionally, we provide a **BLIP integration** for state-of-the-art captioning on any image type.
+### How it works
+
+Our model combines two powerful neural network architectures:
+
+1. **CNN (ResNet-101)** — Acts as the "eyes", extracting visual features from images
+2. **LSTM with Attention** — Acts as the "brain", generating words one by one while focusing on relevant image regions
+
+We also integrated **BLIP**, a modern vision-language model, for comparison and enhanced capabilities.
 
 ## 📁 Project Structure
 
@@ -184,65 +188,65 @@ python train.py
 
 ## 📈 Results
 
-| Metric | Value |
-|--------|-------|
-| BLEU-4 | ~0.25 |
-| Top-5 Accuracy | ~70% |
+We evaluated our model using standard image captioning metrics:
 
-## 🔄 Model Comparison
+| Metric | Value | What it measures |
+|--------|-------|------------------|
+| BLEU-4 | ~0.25 | N-gram overlap with reference captions |
+| Top-5 Accuracy | ~70% | Correct word in top 5 predictions |
 
-| Model | Training Data | Strengths | Weaknesses |
-|-------|---------------|-----------|------------|
-| **COCO Model** (ours) | 118K images | Educational, interpretable | Limited to real photos |
-| **BLIP** (integrated) | 129M images | Works on anything | Black box |
+## 🔄 Our Model vs BLIP
 
-## 📚 Technical Details
+We also integrated BLIP (a state-of-the-art model) for comparison:
 
-### Why ResNet-101?
-- **Residual connections** prevent vanishing gradients
-- **Pre-trained on ImageNet** (transfer learning)
-- Outputs rich 2048-dimensional feature vectors
+| Aspect | Our COCO Model | BLIP |
+|--------|----------------|------|
+| **Training Data** | 118K COCO images | 129M image-text pairs |
+| **Best For** | Real-world photos | Any image (cartoons, art, memes) |
+| **Educational Value** | ✅ You can understand every component | Black box |
+| **Speed** | Faster | Slower (larger model) |
 
-### Why Attention?
-- Allows decoder to **focus on relevant image regions**
-- Each word attends to different parts of the image
-- Improves caption quality and interpretability
+## 📚 Under the Hood
 
-### Why LSTM?
-- **Long Short-Term Memory** handles sequential data
-- Gates (forget, input, output) manage information flow
-- Generates coherent multi-word captions
+### The Encoder: ResNet-101
+We use a pre-trained ResNet-101 as our "visual feature extractor". Think of it as the model's eyes — it looks at the image and creates a rich numerical representation (14×14 grid of 2048-dimensional vectors). The **residual connections** in ResNet allow us to use a very deep network without the gradients vanishing during training.
+
+### The Attention Mechanism  
+This is the key innovation! Instead of looking at the entire image equally, the model learns to **focus on different regions** when generating each word. When saying "dog", it looks at the dog. When saying "frisbee", it shifts attention to the frisbee. This makes the captions more accurate and the model more interpretable.
+
+### The Decoder: LSTM
+The LSTM (Long Short-Term Memory) network generates the caption word by word. It maintains a "memory" of what it has said so far, and uses the attention-weighted image features to decide the next word. The **gates** (forget, input, output) help it remember important information over long sequences.
 
 ### Beam Search
-- Explores multiple candidate sequences
-- Keeps top-k hypotheses at each step
-- Produces better captions than greedy decoding
+During inference, instead of always picking the most likely next word (greedy), we keep track of the **top-k best sequences** at each step. This often produces more fluent and accurate captions.
 
 ## 👥 Authors
 
-- **ACSAI Students** - La Sapienza University of Rome
+This project was developed as part of the **AI Lab** course in the ACSAI program (Applied Computer Science and Artificial Intelligence) at La Sapienza University of Rome, 2024.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is open source under the MIT License — feel free to use, modify, and learn from it!
 
 ## 🙏 Acknowledgments
 
-- [COCO Dataset](https://cocodataset.org/)
-- [Show, Attend and Tell](https://arxiv.org/abs/1502.03044) - Original attention paper
-- [Salesforce BLIP](https://github.com/salesforce/BLIP) - State-of-the-art model
-- [PyTorch](https://pytorch.org/)
-- [Hugging Face Transformers](https://huggingface.co/transformers/)
+We built upon the work of many researchers and open-source contributors:
+
+- **[COCO Dataset](https://cocodataset.org/)** — The foundation for training and evaluation
+- **[Show, Attend and Tell](https://arxiv.org/abs/1502.03044)** — The paper that introduced attention for image captioning
+- **[Salesforce BLIP](https://github.com/salesforce/BLIP)** — State-of-the-art vision-language model
+- **[PyTorch](https://pytorch.org/)** & **[Hugging Face](https://huggingface.co/)** — Amazing deep learning tools
 
 ## 📖 References
 
-1. Lin, T.Y., et al. "Microsoft COCO: Common Objects in Context." ECCV 2014.
-2. He, K., et al. "Deep Residual Learning for Image Recognition." CVPR 2016.
-3. Xu, K., et al. "Show, Attend and Tell: Neural Image Caption Generation with Visual Attention." ICML 2015.
-4. Li, J., et al. "BLIP: Bootstrapping Language-Image Pre-training." ICML 2022.
+1. Lin, T.Y., et al. "Microsoft COCO: Common Objects in Context." *ECCV 2014*
+2. He, K., et al. "Deep Residual Learning for Image Recognition." *CVPR 2016*
+3. Xu, K., et al. "Show, Attend and Tell: Neural Image Caption Generation with Visual Attention." *ICML 2015*
+4. Li, J., et al. "BLIP: Bootstrapping Language-Image Pre-training." *ICML 2022*
 
 ---
 
 <p align="center">
-  Made with ❤️ at La Sapienza University of Rome
+  <b>La Sapienza University of Rome • ACSAI • 2024</b><br>
+  Made with ❤️ for learning AI
 </p>
