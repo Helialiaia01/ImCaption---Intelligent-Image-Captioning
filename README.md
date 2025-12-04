@@ -14,22 +14,19 @@
 
 ---
 
-## 🎯 What is this project?
+## Overview
 
-Have you ever wondered how AI can "see" an image and describe it in words? This project explores exactly that!
+This project implements an encoder-decoder architecture with attention for automatic image captioning. Given an input image, the model generates a natural language description of its content.
 
-We built an **image captioning system** that takes any photograph and generates a descriptive sentence about its content. For example, given a photo of a park, it might output: *"a dog playing with a frisbee in the grass"*.
+The system combines:
+- **ResNet-101** for visual feature extraction
+- **Attention mechanism** for focusing on relevant image regions
+- **LSTM** for sequential caption generation
+- **Beam search** for improved inference
 
-### How it works
+We also provide an integration with BLIP for comparison with modern vision-language models.
 
-Our model combines two powerful neural network architectures:
-
-1. **CNN (ResNet-101)** — Acts as the "eyes", extracting visual features from images
-2. **LSTM with Attention** — Acts as the "brain", generating words one by one while focusing on relevant image regions
-
-We also integrated **BLIP**, a modern vision-language model, for comparison and enhanced capabilities.
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 Image-Captioning/
@@ -52,7 +49,7 @@ Image-Captioning/
     └── *.pth.tar
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Clone the Repository
 
@@ -88,7 +85,7 @@ python demo.py --num_samples 5
 python demo.py --image path/to/your/image.jpg
 ```
 
-## 💡 Usage Examples
+## Usage Examples
 
 ### Basic Captioning (COCO Model)
 
@@ -121,7 +118,7 @@ python blip_caption.py --image image.jpg --detailed
 python blip_caption.py --image image.jpg --compare
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -147,7 +144,7 @@ python blip_caption.py --image image.jpg --compare
 | **Attention** | Soft attention over image regions | `models.py:Attention` |
 | **Decoder** | LSTM with attention for text generation | `models.py:DecoderWithAttention` |
 
-## 📊 Training
+## Training
 
 ### Prerequisites
 - COCO 2017 dataset (~20GB)
@@ -186,49 +183,42 @@ python train.py
 | `encoder_lr` | 1e-4 | Encoder learning rate |
 | `decoder_lr` | 4e-4 | Decoder learning rate |
 
-## 📈 Results
+## Results
 
-We evaluated our model using standard image captioning metrics:
+We evaluated our model on the COCO validation set:
 
-| Metric | Value | What it measures |
-|--------|-------|------------------|
-| BLEU-4 | ~0.25 | N-gram overlap with reference captions |
-| Top-5 Accuracy | ~70% | Correct word in top 5 predictions |
+| Metric | Value |
+|--------|-------|
+| BLEU-4 | ~0.25 |
+| Top-5 Accuracy | ~70% |
 
-## 🔄 Our Model vs BLIP
+## BLIP Integration
 
-We also integrated BLIP (a state-of-the-art model) for comparison:
+In addition to our custom-trained model, we integrated BLIP (Bootstrapped Language-Image Pre-training) to compare traditional encoder-decoder approaches with modern vision-language models. While our CNN+LSTM model performs well on real-world photographs similar to the COCO dataset, BLIP generalizes better to diverse image types including illustrations and artwork.
 
-| Aspect | Our COCO Model | BLIP |
-|--------|----------------|------|
-| **Training Data** | 118K COCO images | 129M image-text pairs |
-| **Best For** | Real-world photos | Any image (cartoons, art, memes) |
-| **Educational Value** | ✅ You can understand every component | Black box |
-| **Speed** | Faster | Slower (larger model) |
+## Technical Details
 
-## 📚 Under the Hood
+### Encoder (ResNet-101)
+The encoder uses a pre-trained ResNet-101 to extract visual features from input images. The network outputs a 14×14 grid of 2048-dimensional feature vectors, providing a spatial representation of the image content.
 
-### The Encoder: ResNet-101
-We use a pre-trained ResNet-101 as our "visual feature extractor". Think of it as the model's eyes — it looks at the image and creates a rich numerical representation (14×14 grid of 2048-dimensional vectors). The **residual connections** in ResNet allow us to use a very deep network without the gradients vanishing during training.
+### Attention Mechanism
+The attention module allows the decoder to focus on different image regions when generating each word. This improves caption quality and provides interpretability—we can visualize which parts of the image the model attended to for each word.
 
-### The Attention Mechanism  
-This is the key innovation! Instead of looking at the entire image equally, the model learns to **focus on different regions** when generating each word. When saying "dog", it looks at the dog. When saying "frisbee", it shifts attention to the frisbee. This makes the captions more accurate and the model more interpretable.
-
-### The Decoder: LSTM
-The LSTM (Long Short-Term Memory) network generates the caption word by word. It maintains a "memory" of what it has said so far, and uses the attention-weighted image features to decide the next word. The **gates** (forget, input, output) help it remember important information over long sequences.
+### Decoder (LSTM)
+The LSTM decoder generates captions word by word, using the attention-weighted image features and its internal memory state. The gates (forget, input, output) help maintain relevant information across the sequence.
 
 ### Beam Search
-During inference, instead of always picking the most likely next word (greedy), we keep track of the **top-k best sequences** at each step. This often produces more fluent and accurate captions.
+At inference time, beam search explores multiple candidate sequences simultaneously, keeping the top-k hypotheses at each step. This typically produces more coherent captions than greedy decoding.
 
-## 👥 Authors
+## Authors
 
 This project was developed as part of the **AI Lab** course in the ACSAI program (Applied Computer Science and Artificial Intelligence) at La Sapienza University of Rome, 2024.
 
-## 📄 License
+## License
 
 This project is open source under the MIT License — feel free to use, modify, and learn from it!
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 We built upon the work of many researchers and open-source contributors:
 
@@ -237,7 +227,7 @@ We built upon the work of many researchers and open-source contributors:
 - **[Salesforce BLIP](https://github.com/salesforce/BLIP)** — State-of-the-art vision-language model
 - **[PyTorch](https://pytorch.org/)** & **[Hugging Face](https://huggingface.co/)** — Amazing deep learning tools
 
-## 📖 References
+## References
 
 1. Lin, T.Y., et al. "Microsoft COCO: Common Objects in Context." *ECCV 2014*
 2. He, K., et al. "Deep Residual Learning for Image Recognition." *CVPR 2016*
